@@ -1,21 +1,185 @@
 import { GetServerSideProps } from 'next'
-import React, { ReactElement } from 'react'
-import Layout from '../../components/layouts/layout'
+import React, { ReactElement } from "react";
+import Header from "../../components/layouts/header";
+import Menu from "../../components/layouts/menu";
+import Layout from "../../components/layouts/layout";
+import MaterialTable, { Action } from "material-table";
+import { products } from "../api/dummy";
+import { Typography, makeStyles } from "@material-ui/core";
+import Moment from "react-moment";
+import NumberFormat from "react-number-format";
+import { Edit, DeleteOutline } from "@material-ui/icons";
+import { Formik, Form, Field } from "formik";
+import { TextField } from "formik-material-ui";
+import Container from "@material-ui/core/Container";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Router from 'next/router'
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: "80%",
+    },
+    field: {
+        marginTop: 16,
+    },
+    card: {
+        padding: 20,
+    },
+}));
 
 interface Props {
-    data: number[]
+    id: string,
+    name: string,
+    price: number,
+    stock: number
+
 }
 
-export default function StockEdit({ data }: Props): ReactElement {
+export default function StockEdit({ id, name, price, stock }: Props): ReactElement {
+    const classes = useStyles();
+
+    const showPreviewImage = (values) => {
+        if (values.file_obj) {
+            return (
+                <img src={values.file_obj} style={{ height: 100, marginTop: 16 }} />
+            );
+        }
+    };
+
+    const showForm = ({ values, setFieldValue, isValid, dirty }) => {
+        return (
+            <Form>
+                <Card className={classes.card}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h3">
+                            Edit Stock
+              </Typography>
+                        <Field
+                            className={classes.field}
+                            fullWidth
+                            component={TextField}
+                            name="id"
+                            disabled
+                            type="text"
+                            label="ProductId"
+                        />
+                        <br />
+                        <Field
+                            className={classes.field}
+                            fullWidth
+                            component={TextField}
+                            name="name"
+                            type="text"
+                            label="Name"
+                        />
+                        <br />
+                        <Field
+                            className={classes.field}
+                            fullWidth
+                            component={TextField}
+                            name="price"
+                            type="number"
+                            label="Price"
+                        />
+
+                        <Field
+                            className={classes.field}
+                            fullWidth
+                            component={TextField}
+                            name="stock"
+                            type="number"
+                            label="Stock"
+                        />
+
+                        <div>{showPreviewImage(values)}</div>
+
+                        <div className={classes.field}>
+                            <img
+                                src={`/static/img/next-icon.png`}
+                                style={{ width: 25, height: 20 }}
+                            />
+                            <span
+                                style={{ color: "#00B0CD", marginLeft: 10, marginRight: 10 }}
+                            >
+                                Add Picture
+                </span>
+                            <input
+                                type="file"
+                                onChange={(e) => {
+                                    e.preventDefault();
+                                    setFieldValue("file", e.target.files[0]); // for upload
+                                    setFieldValue(
+                                        "file_obj",
+                                        URL.createObjectURL(e.target.files[0])
+                                    ); // for preview image
+                                }}
+                                name="image"
+                                click-type="type1"
+                                className="picupload"
+                                multiple
+                                accept="image/*"
+                                id="files"
+                                style={{ padding: "20px 0" }}
+                            />
+                        </div>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={!(isValid && dirty)}
+                        >
+                            Edit
+              </Button>
+                        <Button onClick={() => Router.back()}>Cancel</Button>
+                    </CardActions>
+                </Card>
+            </Form>
+        );
+    };
+
     return (
         <Layout>
-            <h1>Edit</h1>
-            <span>{JSON.stringify(data)}</span>
+            <Formik
+                validate={(values) => {
+                    let errors: any = {};
+                    if (!values.name) errors.name = "กรุณาใส่ชื่อด้วย";
+                    if (!values.stock) errors.stock = "กรุณาระบุจำนวน";
+                    if (!values.price) errors.price = "กรุณาระบุราคา";
+                    return errors;
+                }}
+                enableReinitialize
+                initialValues={{ id, name, stock, price }}
+                onSubmit={(values: any, { setSubmitting }) => {
+                    let formData = new FormData();
+                    formData.append("name", values.name);
+                    formData.append("price", values.price);
+                    formData.append("stock", values.stock);
+                    formData.append("image", values.file);
+                    // alert(JSON.stringify(values));
+                    // dispatch(stockActions.addProduct(formData, props.history));
+                    setSubmitting(false);
+                }}
+            >
+                {(props) => showForm(props)}
+            </Formik>
+
+            {/* /.content */}
         </Layout>
-    )
+    );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
-        props: { data: [1, 2, 3, 4, 5, parseInt(context.query.id.toString())] }
+        props: {
+
+            id: context.query.id,
+            name: "wasinapl",
+            price: 100,
+            stock: 10
+
+        }
     }
 }

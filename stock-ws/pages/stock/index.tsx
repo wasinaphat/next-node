@@ -8,6 +8,7 @@ import { Button, Chip, Typography } from '@material-ui/core'
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { DeleteOutline, Edit } from '@material-ui/icons'
+import Router from 'next/router'
 interface Props {
 
 }
@@ -70,7 +71,14 @@ export default function index({ }: Props): ReactElement {
         {
             icon: () => <Edit color="secondary" />,
             tooltip: "Edit",
-            onClick: () => {
+            onClick: (event, rowData) => {
+                Router.push({
+                    pathname: '/stock/edit',
+                    query: {
+                        id: rowData.id
+                    }
+                })
+                // Router.push(`/stock/edit?id=${rowData.id}`);
 
             }
         },
@@ -78,7 +86,7 @@ export default function index({ }: Props): ReactElement {
         {
             icon: () => <DeleteOutline color="secondary" />,
             tooltip: "Delete",
-            onClick: () => {
+            onClick: (event, rowData) => {
 
             }
         }
@@ -98,7 +106,9 @@ export default function index({ }: Props): ReactElement {
                         <div>
                             <MTableToolbar {...props} />
                             <div style={{ padding: "0px 10px" }}>
-                                <Button fullWidth variant="contained" color="primary">
+                                <Button fullWidth variant="contained" color="primary" onClick={() => {
+                                    Router.push("/stock/create")
+                                }}>
                                     Create
                           </Button>
                             </div>

@@ -15,7 +15,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-
+import Router from 'next/router'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "80%",
@@ -81,7 +81,7 @@ export default function StockCreate({ }: Props): ReactElement {
 
                         <div className={classes.field}>
                             <img
-                                src={`${process.env.PUBLIC_URL}/images/ic_photo.png`}
+                                src={`/static/img/next-icon.png`}
                                 style={{ width: 25, height: 20 }}
                             />
                             <span
@@ -118,7 +118,7 @@ export default function StockCreate({ }: Props): ReactElement {
                         >
                             Create
               </Button>
-                        <Button>Cancel</Button>
+                        <Button onClick={() => Router.back()}>Cancel</Button>
                     </CardActions>
                 </Card>
             </Form>
@@ -142,7 +142,7 @@ export default function StockCreate({ }: Props): ReactElement {
                     formData.append("price", values.price);
                     formData.append("stock", values.stock);
                     formData.append("image", values.file);
-                    alert(JSON.stringify(values));
+                    // alert(JSON.stringify(values));
                     // dispatch(stockActions.addProduct(formData, props.history));
                     setSubmitting(false);
                 }}
