@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react'
 import Header from '../components/layouts/header'
 import Layout from '../components/layouts/layout'
 import Menu from '../components/layouts/menu'
-import MaterialTable from 'material-table'
+import MaterialTable, { Action } from 'material-table'
 import { products } from './api/dummy'
 import { Typography } from '@material-ui/core'
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
+import { DeleteOutline, Edit } from '@material-ui/icons'
 interface Props {
 
 }
@@ -63,6 +64,29 @@ export default function Stock({ }: Props): ReactElement {
             </Typography>
         },
     ];
+
+    const actions: Action<any>[] = [
+
+        {
+            icon: () => <Edit />,
+            iconProps: { color: 'secondary' },
+            tooltip: "Edit",
+            onClick: () => {
+
+            }
+        },
+
+        {
+            icon: () => <DeleteOutline />,
+            iconProps: { color: 'action' },
+            tooltip: "Delete",
+            onClick: () => {
+
+            }
+        }
+    ];
+
+
     return (
 
         <Layout>
@@ -71,6 +95,7 @@ export default function Stock({ }: Props): ReactElement {
                 columns={columns}
                 data={products}
                 title="Demo Title"
+                actions={actions}
             />
         </Layout>
 
