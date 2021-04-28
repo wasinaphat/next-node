@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement,useEffect } from 'react'
 import Header from '../../components/layouts/header'
 import Layout from '../../components/layouts/layout'
 import Menu from '../../components/layouts/menu'
@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { DeleteOutline, Edit } from '@material-ui/icons'
 import Router from 'next/router'
+import axios from 'axios'
 interface Props {
 
 }
