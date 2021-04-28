@@ -32,11 +32,8 @@ const useStyles = makeStyles({
     },
 });
 
-const onClickLogin = () => {
-    Router.push("/stock")
-}
-export default function Register({ }: Props): ReactElement {
 
+export default function Login({ }: Props): ReactElement {
     const classes = useStyles();
     return (
         <React.Fragment>
@@ -61,12 +58,12 @@ export default function Register({ }: Props): ReactElement {
                     </>
                     <>
                         <Button fullWidth size="small" color="primary" type="button" variant="contained"
-                            onClick={onClickLogin}>
-                            Login
+                            onClick={() => alert("hi")}>
+                            Register
         </Button>
                         <Button fullWidth size="small" variant="contained"
-                            color="default" onClick={() => Router.push('/register')}>
-                            Register
+                            color="default" onClick={() => Router.push('/login')}>
+                            Cancel
         </Button>
                     </>
                 </Card>
@@ -81,6 +78,6 @@ export default function Register({ }: Props): ReactElement {
             }`}
                 </style>
             </div>
-        </React.Fragment >
+        </React.Fragment>
     )
 }
