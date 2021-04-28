@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
-import Header from '../components/layouts/header'
-import Layout from '../components/layouts/layout'
-import Menu from '../components/layouts/menu'
-import MaterialTable, { Action } from 'material-table'
-import { products } from './api/dummy'
-import { Typography } from '@material-ui/core'
+import Header from '../../components/layouts/header'
+import Layout from '../../components/layouts/layout'
+import Menu from '../../components/layouts/menu'
+import MaterialTable, { Action, MTableToolbar } from 'material-table'
+import { products } from '../api/dummy'
+import { Button, Chip, Typography } from '@material-ui/core'
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { DeleteOutline, Edit } from '@material-ui/icons'
@@ -12,11 +12,11 @@ interface Props {
 
 }
 
-export default function Stock({ }: Props): ReactElement {
+export default function index({ }: Props): ReactElement {
     const columns = [
         {
             title: "ID",
-            render: (item) => <Typography variant="body1" style={{ color: 'yellowgreen' }}>{item.id}</Typography>
+            render: (item) => <Typography variant="body1" >{item.id}</Typography>
         },
         {
             title: "IMAGE",
@@ -68,8 +68,7 @@ export default function Stock({ }: Props): ReactElement {
     const actions: Action<any>[] = [
 
         {
-            icon: () => <Edit />,
-            iconProps: { color: 'secondary' },
+            icon: () => <Edit color="secondary" />,
             tooltip: "Edit",
             onClick: () => {
 
@@ -77,8 +76,7 @@ export default function Stock({ }: Props): ReactElement {
         },
 
         {
-            icon: () => <DeleteOutline />,
-            iconProps: { color: 'action' },
+            icon: () => <DeleteOutline color="secondary" />,
             tooltip: "Delete",
             onClick: () => {
 
@@ -90,12 +88,23 @@ export default function Stock({ }: Props): ReactElement {
     return (
 
         <Layout>
-            <h1>Stock</h1>
             <MaterialTable
                 columns={columns}
                 data={products}
-                title="Demo Title"
+                title="Stock"
                 actions={actions}
+                components={{
+                    Toolbar: (props) => (
+                        <div>
+                            <MTableToolbar {...props} />
+                            <div style={{ padding: "0px 10px" }}>
+                                <Button fullWidth variant="contained" color="primary">
+                                    Create
+                          </Button>
+                            </div>
+                        </div>
+                    ),
+                }}
             />
         </Layout>
 
