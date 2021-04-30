@@ -37,7 +37,7 @@ interface Props {}
 
 export default function StockCreate({}: Props): ReactElement {
   const classes = useStyles();
-  const stockCreateReducer = useSelector((state) => state.stockCreateReducer);
+  const stockCreateReducer = useSelector((state:any) => state.stockCreateReducer);
   const dispatch = useDispatch();
 
   const showPreviewImage = (values) => {

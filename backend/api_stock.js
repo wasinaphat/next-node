@@ -31,16 +31,17 @@ uploadImage = async (files, doc) => {
 };
 
 // Get Products
-router.get("/product", jwt.verify, async (req, res) => {
+router.get("/product", async (req, res) => {
   let result = await product.findAll({ order: Sequelize.literal("id DESC") });
   res.json(result);
 });
 
 // Add Product
-router.post("/product", jwt.verify, async (req, res) => {
+router.post("/product", async (req, res) => {
   try {
     const form = new formidable.IncomingForm();
     form.parse(req, async (error, fields, files) => {
+  
       let result = await product.create(fields);
       result = await uploadImage(files, result);
       res.json({
@@ -54,7 +55,7 @@ router.post("/product", jwt.verify, async (req, res) => {
 });
 
 // Update Product
-router.put("/product",jwt.verify, async (req, res) => {
+router.put("/product", async (req, res) => {
   try {
     var form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
