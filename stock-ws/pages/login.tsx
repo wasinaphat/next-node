@@ -12,10 +12,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { TextField } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
-
 import Router from "next/router";
-import { useSelector } from "react-redux";
-
+import { DefaultRootState, useDispatch, useSelector } from "react-redux";
+import actions from "../redux/actions";
 
 interface Props { }
 
@@ -38,14 +37,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const onClickLogin = () => {
-    Router.push("/stock");
-};
-
 export default function Login({ }: Props): ReactElement {
     const classes = useStyles();
 
-    const showForm = (props) => {
+    const dispatch = useDispatch();
+    const loginReducer = useSelector(({ loginReducer }: any) => loginReducer);
+
+    const showForm = ({ values, setFieldValue, isValid, dirty }) => {
         return (
             <Form>
                 <Field
@@ -72,12 +70,14 @@ export default function Login({ }: Props): ReactElement {
                 />
 
                 <Button
-                    type="submit"
+                    type="button"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={onClickLogin}
+                    onClick={() => {
+                        dispatch(actions.login(values));
+                    }}
                 >
                     Sign In
         </Button>
@@ -86,12 +86,11 @@ export default function Login({ }: Props): ReactElement {
                     size="small"
                     color="primary"
                     onClick={() => {
-                        Router.push("/register");
+                        // Router.push("/register");
                     }}
                 >
                     Register
         </Button>
-                {/* {authReducer.token && (<span>{authReducer.token}</span>)} */}
             </Form>
         );
     };
@@ -102,13 +101,15 @@ export default function Login({ }: Props): ReactElement {
                 <Card className={classes.root}>
                     <CardMedia
                         className={classes.media}
-                        image="/static/img/next-icon.png"
+                        image="/static/img/next_login.jpg"
                         title="Contemplative Reptile"
                     />
                     <CardContent>
                         <Formik
                             initialValues={{ username: "", password: "" }}
                             onSubmit={(values) => {
+                                dispatch(actions.login(values));
+
                                 // alert(JSON.stringify(values));
                             }}
                         >
@@ -117,7 +118,6 @@ export default function Login({ }: Props): ReactElement {
                     </CardContent>
                 </Card>
 
-                {/* //override style */}
                 <style jsx global>
                     {`
             body {

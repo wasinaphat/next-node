@@ -12,9 +12,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { TextField } from "@material-ui/core";
 import Router from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import actions from '../redux/actions'
-
+import Alert from '@material-ui/lab/Alert';
 interface Props { }
 
 const useStyles = makeStyles((theme) => ({
@@ -49,10 +49,12 @@ export default function Register({ }: Props): ReactElement {
   });
 
   const dispatch = useDispatch()
+  const registerReducer = useSelector((state:RootStateOrAny) => state.registerReducer);
   return (
     <React.Fragment>
       <div className={classes.container}>
         <Card className={classes.root}>
+          
           <CardMedia
             className={classes.media}
             image="/static/img/next-icon.png"
@@ -81,7 +83,7 @@ export default function Register({ }: Props): ReactElement {
                 fullWidth
                 value={account.password}
                 onChange={(e) => {
-                
+
                   setAccount({ ...account, password: e.target.value });
                 }}
                 name="password"
@@ -97,7 +99,7 @@ export default function Register({ }: Props): ReactElement {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-             
+
                   dispatch(actions.register(account));
                 }}
                 className={classes.submit}
@@ -115,6 +117,8 @@ export default function Register({ }: Props): ReactElement {
               >
                 Cancel
               </Button>
+              {registerReducer.isFailed && <Alert severity="error">Register Failed</Alert>}
+           
             </form>
           </CardContent>
         </Card>

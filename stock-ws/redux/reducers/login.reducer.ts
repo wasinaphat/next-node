@@ -15,7 +15,7 @@ export default (state = initialState, { type, payload }): LoginReducer => {
         case LOGIN_FAILED:
             return { ...state, result: null, isFetching: false, isFailed: true }
         case LOGIN_SUCCESS:
-            return { ...state, result: payload.result, isFetching: false, isFailed: true }
+            return { ...state, result: payload.result, isFetching: false, isFailed: false }
         default:
             return state;
     }

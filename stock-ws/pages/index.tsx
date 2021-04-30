@@ -27,7 +27,7 @@ export default function Index({ }: Props): ReactElement {
   )
 }
 
-index.getInitialProps = ({ res, err }) => {
+Index.getInitialProps = ({ res, err }) => {
   res.writeHead(301, { Location: 'login' });
   res.end();
   return {}

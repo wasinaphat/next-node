@@ -17,10 +17,10 @@ export function* sagaRegister({ payload }: any) {
             yield put(actions.registerSuccess({ result: response.data }))
             Router.push('/login')
         } else {
-               alert(JSON.stringify(result))
+             
             yield put(actions.registerFailed())
         }
-        yield put(actions.registerSuccess({ result: "ok" }))
+      
     } catch (error) {
         yield put(actions.registerFailed())
     }
