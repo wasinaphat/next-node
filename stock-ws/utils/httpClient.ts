@@ -8,11 +8,11 @@ const httpClient = axios.create({
  
 })
 
-httpClient.interceptors.request.use((req) => {
-    const token = localStorage.getItem(TOKEN)
-    // NOTE: add token
-    if (token) req.headers = { 'x-access-token': token }
-    return req
-})
+// httpClient.interceptors.request.use((req) => {
+//     const token = localStorage.getItem(TOKEN)
+//     // NOTE: add token
+//     if (token) req.headers = { 'x-access-token': token }
+//     return req
+// })
 
 export default httpClient

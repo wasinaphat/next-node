@@ -17,6 +17,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Router from 'next/router'
+import actions from '../../redux/actions';
+import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "80%",
@@ -33,17 +35,23 @@ interface Props {
     id: string,
     name: string,
     price: number,
-    stock: number
+    stock: number,
+    image: string
 
 }
 
-export default function StockEdit({ id, name, price, stock }: Props): ReactElement {
+export default function StockEdit({ id, name, price, stock, image }: Props): ReactElement {
     const classes = useStyles();
-
+    const dispatch = useDispatch()
+    const stockEditReducer = useSelector((state: any) => state.stockEditReducer)
     const showPreviewImage = (values) => {
         if (values.file_obj) {
             return (
                 <img src={values.file_obj} style={{ height: 100, marginTop: 16 }} />
+            );
+        } else if (values.image) {
+            return (
+                <img src={`${process.env.NEXT_PUBLIC_APP_BASE_IMAGE_URL}/${values.image}`} style={{ height: 100, marginTop: 16 }} />
             );
         }
     };
@@ -152,14 +160,19 @@ export default function StockEdit({ id, name, price, stock }: Props): ReactEleme
                     return errors;
                 }}
                 enableReinitialize
-                initialValues={{ id, name, stock, price }}
+                initialValues={{ id, name, stock, price, image }}
                 onSubmit={(values: any, { setSubmitting }) => {
                     let formData = new FormData();
+                    formData.append("id", values.id);
                     formData.append("name", values.name);
                     formData.append("price", values.price);
                     formData.append("stock", values.stock);
-                    formData.append("image", values.file);
+
+                    if (values.file) {
+                        formData.append("image", values.file);
+                    }
                     // alert(JSON.stringify(values));
+                    dispatch(actions.editStock(formData))
                     // dispatch(stockActions.addProduct(formData, props.history));
                     setSubmitting(false);
                 }}
@@ -172,14 +185,10 @@ export default function StockEdit({ id, name, price, stock }: Props): ReactEleme
     );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const result = await actions.doGetStockById(context.query.id);
     return {
         props: {
-
-            id: context.query.id,
-            name: "wasinapl",
-            price: 100,
-            stock: 10
-
+            ...result
         }
     }
 }
