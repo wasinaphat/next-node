@@ -12,8 +12,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { TextField } from "@material-ui/core";
 import Router from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import actions from '../redux/actions'
 
-interface Props {}
+interface Props { }
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,14 +41,14 @@ interface IAccount {
   password: string;
 }
 
-export default function Register({}: Props): ReactElement {
+export default function Register({ }: Props): ReactElement {
   const classes = useStyles();
   const [account, setAccount] = useState<IAccount>({
     username: "",
     password: "",
   });
-  
 
+  const dispatch = useDispatch()
   return (
     <React.Fragment>
       <div className={classes.container}>
@@ -79,6 +81,7 @@ export default function Register({}: Props): ReactElement {
                 fullWidth
                 value={account.password}
                 onChange={(e) => {
+                
                   setAccount({ ...account, password: e.target.value });
                 }}
                 name="password"
@@ -94,7 +97,8 @@ export default function Register({}: Props): ReactElement {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  alert(JSON.stringify(account));
+             
+                  dispatch(actions.register(account));
                 }}
                 className={classes.submit}
               >

@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import App from 'next/app'
 import Head from 'next/head'
+import { wrapper } from '../redux'
 interface Props {
 
 }
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -16,3 +17,4 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </>
   )
 }
+export default wrapper.withRedux(MyApp);

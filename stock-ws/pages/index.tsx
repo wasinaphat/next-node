@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function index({ }: Props): ReactElement {
+export default function Index({ }: Props): ReactElement {
   const classes = useStyles();
 
   return (

@@ -14,6 +14,8 @@ import { TextField } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
 
 import Router from "next/router";
+import { useSelector } from "react-redux";
+
 
 interface Props { }
 
@@ -89,6 +91,7 @@ export default function Login({ }: Props): ReactElement {
                 >
                     Register
         </Button>
+                {/* {authReducer.token && (<span>{authReducer.token}</span>)} */}
             </Form>
         );
     };
@@ -106,7 +109,7 @@ export default function Login({ }: Props): ReactElement {
                         <Formik
                             initialValues={{ username: "", password: "" }}
                             onSubmit={(values) => {
-                                alert(JSON.stringify(values));
+                                // alert(JSON.stringify(values));
                             }}
                         >
                             {(props) => showForm(props)}
