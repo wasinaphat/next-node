@@ -1,9 +1,12 @@
+import { LOGOUT_SUCCESS } from './../saga/actionTypes';
 
 import { LOGIN_SUCCESS, LOGIN_FETCHING, LOGIN_FAILED } from '../saga/actionTypes';
 import { LoginReducer } from '../../types/login.reducer.types';
 
 const initialState: LoginReducer = {
     result: null,
+    token: null,
+    username: null,
     isFetching: false,
     isFailed: false
 };
@@ -15,7 +18,9 @@ export default (state = initialState, { type, payload }): LoginReducer => {
         case LOGIN_FAILED:
             return { ...state, result: null, isFetching: false, isFailed: true }
         case LOGIN_SUCCESS:
-            return { ...state, result: payload.result, isFetching: false, isFailed: false }
+            return { ...state, result: payload.result, isFetching: false, isFailed: false, token: payload.token, username: payload.username }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }

@@ -1,9 +1,10 @@
-import  Router  from 'next/router';
+import { LoginReducer } from './../../types/login.reducer.types';
+import Router from 'next/router';
 import { kResultOk } from './../../utils/constants';
-import { put, call } from 'redux-saga/effects'
+import { put, call, select, delay } from 'redux-saga/effects'
 import httpClient from '../../utils/httpClient'
 import actions from '../actions'
-
+import { getCookie, removeCookie, setCookie } from '../../utils/cookie'
 
 export function* sagaLogin({ payload }: any) {
     try {
@@ -11,7 +12,8 @@ export function* sagaLogin({ payload }: any) {
         const response = yield call(httpClient.post, '/authen/login', payload);
         const { result } = response.data
         if (result === kResultOk) {
-            yield put(actions.loginSuccess({ result: response.data }))
+            setCookie('token', response.data.token)
+            yield put(actions.loginSuccess(response.data))
             Router.push('/stock')
         } else {
             yield put(actions.loginFailed())
@@ -19,4 +21,24 @@ export function* sagaLogin({ payload }: any) {
     } catch (error) {
         yield put(actions.loginFailed())
     }
+}
+export function* sagaReLogin({ payload }: any) {
+    const state = yield select();
+    yield delay(10);
+    if (state.loginReducer.token) {
+        Router.push('/stock')
+    } else if (payload.token) {
+        yield put(actions.loginSuccess(payload))
+    } else {
+        const localToken = getCookie('token')
+        if (localToken) {
+            yield put(actions.loginSuccess(payload))
+            Router.push('/stock')
+        }
+    }
+}
+export function* sagaLogout() {
+    removeCookie('token')
+    yield put(actions.logoutSuccess())
+    Router.push('/login')
 }

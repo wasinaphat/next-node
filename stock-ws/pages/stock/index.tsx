@@ -1,4 +1,4 @@
-import React, { ReactElement,useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import Header from '../../components/layouts/header'
 import Layout from '../../components/layouts/layout'
 import Menu from '../../components/layouts/menu'
@@ -10,11 +10,20 @@ import NumberFormat from 'react-number-format';
 import { DeleteOutline, Edit } from '@material-ui/icons'
 import Router from 'next/router'
 import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux";
+import stockActions from "../../redux/actions";
 interface Props {
 
 }
 
 export default function index({ }: Props): ReactElement {
+
+    const stockListReducer = useSelector((state: any) => state.stockListReducer);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(stockActions.feedStockList());
+    }, []);
     const columns = [
         {
             title: "ID",
@@ -99,7 +108,7 @@ export default function index({ }: Props): ReactElement {
         <Layout>
             <MaterialTable
                 columns={columns}
-                data={products}
+                data={stockListReducer.result ? stockListReducer.result : []}
                 title="Stock"
                 actions={actions}
                 components={{

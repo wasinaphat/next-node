@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import loginStyle from "../styles/login.style";
 import loginCSS from "../public/static/css/login.module.css";
 
@@ -15,8 +15,12 @@ import { Formik, Form, Field } from "formik";
 import Router from "next/router";
 import { DefaultRootState, useDispatch, useSelector } from "react-redux";
 import actions from "../redux/actions";
+import { NextPageContext } from "next";
+import { getCookie } from "../utils/cookie";
 
-interface Props { }
+interface Props {
+    token?: string
+}
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -37,12 +41,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login({ }: Props): ReactElement {
+export default function Login({ token }: Props): ReactElement {
     const classes = useStyles();
 
     const dispatch = useDispatch();
     const loginReducer = useSelector(({ loginReducer }: any) => loginReducer);
-
+    React.useEffect(() => {
+        dispatch(actions.relogin({ token }))
+    }, []);
     const showForm = ({ values, setFieldValue, isValid, dirty }) => {
         return (
             <Form>
@@ -101,7 +107,7 @@ export default function Login({ }: Props): ReactElement {
                 <Card className={classes.root}>
                     <CardMedia
                         className={classes.media}
-                        image="/static/img/next_login.jpg"
+                        image="/static/img/next-icon.png"
                         title="Contemplative Reptile"
                     />
                     <CardContent>
@@ -133,4 +139,13 @@ export default function Login({ }: Props): ReactElement {
             </div>
         </React.Fragment>
     );
+}
+Login.getInitialProps = (ctx: NextPageContext) => {
+    let token;
+    const isServer = !!ctx.req;
+    if (isServer && ctx.req.headers.cookie) {
+        token = getCookie('token', ctx.req)
+    }
+    console.log("SERVER TOKEN", token)
+    return { token }
 }
