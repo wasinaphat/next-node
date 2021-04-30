@@ -1,8 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import actions from "../actions"
 import httpClient from "../../utils/httpClient"
-import { kResultOk, kResultNok } from '../../utils/constants';
-import Router from 'next/router';
+import { kResultOk, kResultNok } from '../../utils/contants';
 
 
 export function* sagaStockDelete({ payload, dispatch }: any) {

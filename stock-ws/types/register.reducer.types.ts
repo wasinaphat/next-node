@@ -1,4 +1,3 @@
-
 export interface RegisterReducer {
     result: string,
     isFetching: boolean,

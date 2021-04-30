@@ -1,34 +1,14 @@
-import React, { ReactElement } from 'react'
-import Head from 'next/head'
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-interface Props {
+import React, { ReactElement } from "react";
 
-}
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-    },
-  }),
-);
+interface Props {}
 
-export default function Index({ }: Props): ReactElement {
-  const classes = useStyles();
-
-  return (
-    <div>
-      <Head>
-        <title>Stock workshop</title>
-      </Head>
-    </div>
-  )
+export default function index({}: Props): ReactElement {
+  return <div></div>;
 }
 
-Index.getInitialProps = ({ res, err }) => {
-  res.writeHead(301, { Location: 'login' });
+// Called in server-side
+index.getInitialProps = ({ res, err }) => {
+  res.writeHead(301, { Location: "/login" });
   res.end();
-  return {}
-}
+  return {};
+};

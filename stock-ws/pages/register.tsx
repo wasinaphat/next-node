@@ -12,10 +12,11 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { TextField } from "@material-ui/core";
 import Router from "next/router";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import actions from '../redux/actions'
-import Alert from '@material-ui/lab/Alert';
-interface Props { }
+import { useDispatch, useSelector } from "react-redux";
+import actions from "../redux/actions";
+import Alert from "@material-ui/lab/Alert";
+
+interface Props {}
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,27 +42,32 @@ interface IAccount {
   password: string;
 }
 
-export default function Register({ }: Props): ReactElement {
+export default function Register({}: Props): ReactElement {
   const classes = useStyles();
   const [account, setAccount] = useState<IAccount>({
     username: "",
     password: "",
   });
 
-  const dispatch = useDispatch()
-  const registerReducer = useSelector((state:RootStateOrAny) => state.registerReducer);
+  const dispatch = useDispatch();
+  const registerReducer = useSelector((state) => state.registerReducer);
+
   return (
     <React.Fragment>
       <div className={classes.container}>
         <Card className={classes.root}>
-          
           <CardMedia
             className={classes.media}
-            image="/static/img/next-icon.png"
+            image="/static/img/next_register.jpg"
             title="Contemplative Reptile"
           />
           <CardContent>
-            <form noValidate>
+            <form
+              noValidate
+              onSubmit={() => {
+                dispatch(actions.register(account));
+              }}
+            >
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -83,7 +89,6 @@ export default function Register({ }: Props): ReactElement {
                 fullWidth
                 value={account.password}
                 onChange={(e) => {
-
                   setAccount({ ...account, password: e.target.value });
                 }}
                 name="password"
@@ -94,14 +99,10 @@ export default function Register({ }: Props): ReactElement {
               />
 
               <Button
-                type="button"
+                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={() => {
-
-                  dispatch(actions.register(account));
-                }}
                 className={classes.submit}
               >
                 Register
@@ -117,8 +118,10 @@ export default function Register({ }: Props): ReactElement {
               >
                 Cancel
               </Button>
-              {registerReducer.isFailed && <Alert severity="error">Register Failed</Alert>}
-           
+
+              {registerReducer.isFailed && (
+                <Alert severity="error">Register failed!</Alert>
+              )}
             </form>
           </CardContent>
         </Card>

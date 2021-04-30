@@ -1,13 +1,14 @@
+import * as actionTypes from "../saga/actionTypes"
 
-import * as actionTypes from '../saga/actionTypes'
-// rxaction
 export const register = (payload) => ({
     type: actionTypes.REGISTER_REQUEST,
     payload
 })
+
 export const registerFetching = () => ({
     type: actionTypes.REGISTER_FETCHING,
 })
+
 
 export const registerSuccess = (payload) => ({
     type: actionTypes.REGISTER_SUCCESS,
@@ -15,10 +16,8 @@ export const registerSuccess = (payload) => ({
 })
 
 export const registerFailed = () => ({
-    type: actionTypes.REGISTER_FAILED,
+    type: actionTypes.REGISTER_FAILED
 })
-
-
 
 export default {
     register,

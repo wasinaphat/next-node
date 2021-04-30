@@ -1,7 +1,7 @@
 export interface LoginReducer {
     result: string,
-    token: string,
-    username: string,
     isFetching: boolean,
-    isFailed: boolean
+    isFailed: boolean,
+    token: string,
+    username: string
 }

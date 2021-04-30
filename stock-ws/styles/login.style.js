@@ -1,13 +1,14 @@
 import { createStyles } from "@material-ui/core";
+
 export default createStyles({
   section: {
     color: "green",
-    fontSize: "100px",
+    fontSize: 50,
   },
   title: {
-    fontWeight: 600,
+    fontWeight: 900,
   },
   subtitle: {
-    color: 'grey',
+    color: "gray",
   },
 });

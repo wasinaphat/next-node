@@ -1,3 +1,5 @@
+// this file will have the task that we have to perform with cookies/ react-native you need to put your async storage code here.
+
 import cookie from "js-cookie";
 
 export const setCookie = (key, value) => {
